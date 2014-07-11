@@ -1,0 +1,50 @@
+{
+  "name": "domr",
+  "version": "0.1.0",
+  "description": "fast and async DOM updates",
+  "main": "domr.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "open test/index.html",
+    "cjs": "nodefy -o . 'src/**.js'",
+    "release": "npm run-script cjs && npm publish && rm *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/millermedeiros/domr.git"
+  },
+  "keywords": [
+    "dom",
+    "async",
+    "raf",
+    "binding",
+    "render",
+    "update"
+  ],
+  "author": "Miller Medeiros <contact@millermedeiros.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/millermedeiros/domr/issues"
+  },
+  "homepage": "https://github.com/millermedeiros/domr",
+  "jshintConfig": {
+    "undef": true,
+    "browser": true,
+    "eqnull": true,
+    "predef": [
+      "it",
+      "xit",
+      "define",
+      "describe",
+      "expect",
+      "afterEach",
+      "beforeEach",
+      "requirejs"
+    ]
+  },
+  "devDependencies": {
+    "nodefy": "^0.2.2"
+  }
+}
