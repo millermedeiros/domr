@@ -1,6 +1,6 @@
 {
   "name": "domr",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "fast and async DOM updates",
   "main": "domr.js",
   "directories": {
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "open test/index.html",
     "cjs": "nodefy -o . 'src/**.js'",
-    "release": "npm run-script cjs && npm publish && rm *.js"
+    "release": "npm run-script cjs && npm publish",
+    "clean": "rm *.js"
   },
   "repository": {
     "type": "git",
