@@ -228,15 +228,16 @@ If given an array, then treat each contained item as separate binding
 
 ## Install
 
-Modules are converted to node.js format during npm publish in case you want to
-use it with browserify.
+Modules are [converted to node.js
+format](http://github.com/millermedeiros/nodefy) during npm publish in case you
+want to use it with browserify.
 
 ```
 npm install domr
 ```
 
 or you can use the something like [volo](http://volojs.org/) to download the
-source AMD files from github and place it inside the "domr" folder.
+AMD source files. (or just use the files inside `src`)
 
 ```
 volo add millermedeiros/domr#src domr
