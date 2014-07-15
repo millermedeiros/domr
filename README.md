@@ -115,11 +115,22 @@ only update the affected elements. This simplifies the development process and
 reduces the amount of conditionals in the codebase.
 
 It's similar to the way [React](http://facebook.github.io/react/) works, in the
-sense that we always *render* but only it's smart enough to only update the DOM
-when needed. The main difference is that we don't have a virtual DOM and we
-also don't handle how the *state/data* is passed into the *views* (meaning that
-we save thousands of lines of code on the library side but you *might* need to
+sense that we always *render* but it's smart enough to only update the DOM when
+needed. The main difference is that we don't have a virtual DOM and we also
+don't handle how the *state/data* is passed into the *views* (meaning that we
+save thousands of lines of code on the library side but you *might* need to
 implement more logic yourself).
+
+It's important to note that the most expensive actions are usually adding
+& removing elements to the DOM tree, and not really updating
+content/attributes, so the theoretical performance *gains* here might be
+unjustified in many cases (browsers are getting smarter). But even if it
+doesn't provide any real performance benefits we still get a nicer/cleaner API
+than having to deal with all the querying, caching and method calls by
+yourself... it will also force us to not touch the DOM so often, and only use
+it as a representation of the data (that was my main motivation). I might build
+other abstractions on top of this library to make it easier to work with
+collections/lists if I end up using it on any real project.
 
 
 ## Binding types
