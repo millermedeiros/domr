@@ -1,7 +1,7 @@
 define(['exports'], function(exports) {
 
   function isTruthyValue(value) {
-    // JSWTF: value is always a string and `"false" == true`
+    // JSWTF: value is always a string and `Boolean("false") === true`
     return value !== 'false' && value;
   }
 

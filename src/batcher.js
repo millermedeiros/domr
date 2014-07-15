@@ -56,4 +56,16 @@ define(['exports'], function(exports) {
     _willFlush = false;
   }
 
+
+  exports.cancel = cancel;
+  function cancel(group) {
+    var task, i = 0;
+    while ((task = _queue[i++])) {
+      if (task.group === group) {
+        task.pending = false;
+      }
+    }
+  }
+
+
 });

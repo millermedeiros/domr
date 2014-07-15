@@ -179,6 +179,35 @@ define(['src/batcher'], function(batcher) {
     });
 
 
+    // ---
+
+
+    describe('cancel', function () {
+
+      it('should cancel execution of tasks from the given group', function (done) {
+        var obj = {};
+        batcher.push({
+          group: obj,
+          element: subject,
+          id: 'dolor',
+          execute: subject.foo
+        });
+
+        batcher.push({
+          id: 'done',
+          execute: function() {
+            expect(counterFoo).toBe(0);
+            expect(counterBar).toBe(0);
+            done();
+          }
+        });
+
+        batcher.cancel(obj);
+      });
+
+    });
+
+
   });
 
 });

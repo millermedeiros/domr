@@ -3,6 +3,9 @@ define(function(require) {
   var batcher = require('./batcher');
   var actions = require('./actions');
 
+  var EMPTY_OBJECT = {};
+  var EMPTY_ARRAY = [];
+
   // ---
 
   function Binding(el, config) {
@@ -21,16 +24,28 @@ define(function(require) {
 
 
   Binding.prototype.destroy = function() {
-    delete this._root;
-    delete this._elements;
-    delete this._config;
-    delete this._data;
-    delete this._props;
+    if (this._destroyed) {
+      return;
+    }
+
+    batcher.cancel(this);
+
+    // we do not `delete` the properties (or set it to null) to avoid JIT
+    // deoptimization; so we reset the values to same "type".
+    this._root = document.documentElement;
+    this._elements = EMPTY_OBJECT;
+    this._config = EMPTY_OBJECT;
+    this._data = EMPTY_OBJECT;
+    this._props = EMPTY_ARRAY;
+    this._destroyed = true;
   };
 
 
+  Binding.prototype._destroyed = false;
+
+
   Binding.prototype.render = function(data, callback) {
-    if (!data) {
+    if (!data || this._destroyed) {
       return;
     }
 
@@ -40,6 +55,8 @@ define(function(require) {
     while ((prop = this._props[i++])) {
       var value = get(data, prop);
       var oldValue = this._data[prop];
+      // undefined, null and NaN are converted to empty string
+      value = (value == null || value !== value) ? '' : value.toString();
 
       if (value === oldValue) {
         continue;
@@ -69,6 +86,7 @@ define(function(require) {
 
     if (callback) {
       batcher.push({
+        group: this,
         element: this._root,
         id: 'callback',
         execute: callback,
@@ -92,9 +110,6 @@ define(function(require) {
 
 
   Binding.prototype._process = function(prop, config, value, oldValue) {
-    // undefined, null and NaN are converted to empty string
-    value = (value == null || value !== value) ? '' : value.toString();
-
     var selector = config.selector;
     if (!selector && config.role) {
       selector = '[role="' + config.role + '"]';
@@ -118,6 +133,7 @@ define(function(require) {
     }
 
     var task = getTask(config);
+    task.group = this;
     task.element = el;
     task.config = config;
     task.value = value;

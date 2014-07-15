@@ -435,20 +435,33 @@ define(['src/binding'], function(Binding) {
         nextTick(done);
       });
 
-      it('should delete all the references', function () {
+      it('should reset all the references and cancel updates/callbacks', function (done) {
         expect( subject._root ).not.toBeUndefined('_root');
         expect( subject._elements ).not.toBeUndefined('_elements');
         expect( subject._config ).not.toBeUndefined('_config');
         expect( subject._data ).not.toBeUndefined('_data');
         expect( subject._props ).not.toBeUndefined('_props');
+        expect( subject._destroyed ).toBe(false, '_destroyed');
+
+        subject.render({
+          title: 'Dolor Amet'
+        }, function() {
+          expect(true).toBe(false, 'callback should not be called');
+        });
 
         subject.destroy();
 
-        expect( subject._root ).toBeUndefined('_root 2');
-        expect( subject._elements ).toBeUndefined('_elements 2');
-        expect( subject._config ).toBeUndefined('_config 2');
-        expect( subject._data ).toBeUndefined('_data 2');
-        expect( subject._props ).toBeUndefined('_props 2');
+        expect( subject._root ).toBe(document.documentElement, '_root 2');
+        expect( subject._elements ).toEqual({}, '_elements 2');
+        expect( subject._config ).toEqual({}, '_config 2');
+        expect( subject._data ).toEqual({}, '_data 2');
+        expect( subject._props ).toEqual([], '_props 2');
+        expect( subject._destroyed ).toBe(true, '_destroyed 2');
+
+        nextTick(function() {
+          expect( h1.textContent ).toBe( 'Lorem Ipsum' );
+          done();
+        });
       });
 
     });
