@@ -42,7 +42,7 @@ You can update it with:
 
 ```js
 var domr = require('domr');
-var el = document.getElementById('#foo');
+var el = document.getElementById('foo');
 
 // this will create a mapping between properties and elements/actions
 var foo = domr.create(el, {
